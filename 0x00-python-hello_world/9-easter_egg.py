@@ -1,3 +1,2 @@
+#!/usr/bin/python3
 import this
-#str = this.toString()
-#print(str[0:800])
