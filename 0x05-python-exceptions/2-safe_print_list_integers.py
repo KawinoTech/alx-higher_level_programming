@@ -6,7 +6,7 @@ def safe_print_list_integers(my_list=[], x=0):
         try:
             if not isinstance(my_list[y], int):
                 continue
-            print(my_list[y], end="")
+            print("{:d}".format(my_list[y]), end="")
             i += 1
         except Exception:
             raise IndexError
