@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """Contains class rectangle"""
 class Rectangle:
     """Defines class rectangle"""
