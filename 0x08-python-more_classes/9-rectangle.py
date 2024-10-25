@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 """Contains class rectangle"""
+
+
 class Rectangle:
     """Defines class rectangle"""
 
@@ -65,13 +67,21 @@ class Rectangle:
         return "Rectangle({:d}, {:d})".format(self.__width, self.__height)
 
     def __str__(self):
-        if self.__width == 0 or self.__height == 0:
-            return ''
-        else:
-            return "{:s}\n".format(Rectangle.print_symbol * self.__width) * self.__height
+        total = ""
+        for i in range(self.__height):
+            for j in range(self.__width):
+                try:
+                    total += str(self.print_symbol)
+                except Exception:
+                    total += type(self).print_symbol
+            if i is not self.__height - 1:
+                total += "\n"
+        return total
+
     def __del__(self):
         print("Bye rectangle...")
         Rectangle.number_of_instances -= 1
+
     @staticmethod
     def bigger_or_equal(rect_1, rect_2):
         if not isinstance(rect_1, Rectangle):
@@ -81,6 +91,7 @@ class Rectangle:
         if rect_1.area() == rect_2.area():
             return rect_1.area()
         return max(rect_1.area(), rect_2.area())
+
     @classmethod
     def square(cls, size=0):
         return Rectangle(size, size)
