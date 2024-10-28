@@ -46,13 +46,26 @@ class Square:
             self.__size = value
 
     def my_print(self):
-        """prints in stdout the square with the character #"""
-        if self.__size == 0:
-            print("\n", end="")
-        else:
-            for i in range(0, self.__size):
-                print("#"*self.__size)
+        """prints in stdout the square with the character #
 
+        prints the square using '#' characters
+        also takes into account position (x, y) offsets
+        """
+        i = 0
+        if self.__size == 0:
+            print()
+            return
+        for i in range(0, self.__position[1]):
+            print()
+        i = 0
+        for i in range(0, self.__size):
+            j = 0
+            x_pad = 0
+            for x_pad in range(0, self.__position[0]):
+                print(" ", end='')
+            for j in range(0, self.__size):
+                print("#", end='')
+            print()
     @property
     def position(self):
         """
@@ -69,3 +82,18 @@ class Square:
             raise TypeError("position must be a tuple of 2 positive integers")
         else:
             self.__position = value
+
+my_square_1 = Square(3)
+my_square_1.my_print()
+
+print("--")
+
+my_square_2 = Square(3, (1, 1))
+my_square_2.my_print()
+
+print("--")
+
+my_square_3 = Square(3, (3, 0))
+my_square_3.my_print()
+
+print("--")
