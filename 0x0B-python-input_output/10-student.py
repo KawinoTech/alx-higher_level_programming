@@ -21,7 +21,7 @@ class Student:
         """
         dict_1 = {}
 
-        if attrs != None:
+        if attrs:
             for i in range(len(attrs)):
                 try:
                     dict_1[attrs[i]] = getattr(self, attrs[i])
