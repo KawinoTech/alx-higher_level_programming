@@ -12,4 +12,4 @@ def is_same_class(obj, a_class):
         obj: object to be tested
         a-class: class name reference point
     """
-    return True if isinstance(obj.__class__.__name__, a_class) else False
+    return True if type(obj) is a_class else False
