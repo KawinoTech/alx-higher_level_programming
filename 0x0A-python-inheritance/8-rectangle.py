@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Module that defines Recctangle
+Module that defines Rectangle
 """
 
 
