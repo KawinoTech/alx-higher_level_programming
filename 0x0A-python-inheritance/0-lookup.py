@@ -18,7 +18,7 @@ def lookup(obj):
     Args:
         obj:  Object source
     """
-    return dir(obj)
+    return (dir(obj))
 
 print(lookup(MyClass1))
 print(lookup(MyClass2))
