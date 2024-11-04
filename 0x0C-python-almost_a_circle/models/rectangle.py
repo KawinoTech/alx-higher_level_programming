@@ -3,11 +3,12 @@
 Module containing Rectangle class. Sub-class of Base
 """
 from base import Base
+"""superclass Base"""
 
 
 class Rectangle(Base):
     """
-    Class Rectangle. sub-class of Base
+    Class Rectangle. subclass of Base
 
     Attrs:
         private instance width: width of rectangle
@@ -19,11 +20,11 @@ class Rectangle(Base):
     def __init__(self, width, height, x=0, y=0, id=None):
         """Initialize instance attributes.
         Args:
-            width (int): width
-            height (int): height
-            x (int) = x
-            y (int) = y
-            id (int) = id
+            width (int): Width of the rectangle.
+            height (int): Height of the rectangle.
+            x (int): X position of the rectangle.
+            y (int): Y position of the rectangle.
+            id (int): ID of the instance.
         """
         super().__init__(id)
         try:
@@ -131,9 +132,9 @@ class Rectangle(Base):
             name (str): string
             value (int): value to be validated
         Raises:
-            TypeError: value is not an integer
-            ValueError: if x or y value is < 0:
-            ValueError: if width or height value is <= 0
+            TypeError: If `value` is not an integer.
+            ValueError: If `x` or `y` is less than 0.
+            ValueError: If `width` or `height` is less than or equal to 0.
         """
         if not isinstance(value, int):
             raise TypeError(f"{name} must be an integer")
