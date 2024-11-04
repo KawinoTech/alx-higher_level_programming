@@ -8,7 +8,7 @@ from base import Base
 
 class Rectangle(Base):
     """
-    Class Rectangle. inherits from class Base
+    Class Rectangle. sub-class of Base
 
     Attrs:
         private instance width: width of rectangle
@@ -18,6 +18,14 @@ class Rectangle(Base):
     """
 
     def __init__(self, width, height, x=0, y=0, id=None):
+        """initialize instance attributes
+        Args:
+            width (int): width
+            height (int): height
+            x (int) = x
+            y (int) = y
+            id (int) = id
+        """
         super().__init__(id)
         try:
             Rectangle.validator('width', width)
@@ -34,10 +42,18 @@ class Rectangle(Base):
 
     @property
     def width(self):
+        """get width
+        Returns:
+            width
+        """
         return self.__width
 
     @width.setter
     def width(self, value):
+        """set width
+        Args:
+            value (int): value
+        """
         try:
             self.validator('width', value)
         except Exception:
@@ -47,10 +63,18 @@ class Rectangle(Base):
 
     @property
     def height(self):
+        """get height
+        Returns:
+            height
+        """
         return self.__height
 
     @height.setter
     def height(self, value):
+        """set height
+        Args:
+            value (int): value
+        """
         try:
             self.validator('height', value)
         except Exception:
@@ -60,10 +84,18 @@ class Rectangle(Base):
 
     @property
     def x(self):
+        """get x
+        Returns:
+            x
+        """
         return self.__x
 
     @x.setter
     def x(self, value):
+        """set x
+        Args:
+            value (int): value
+        """
         try:
             self.validator('x', value)
         except Exception:
@@ -73,10 +105,18 @@ class Rectangle(Base):
 
     @property
     def y(self):
+        """get y
+        Returns:
+            y
+        """
         return self.__y
 
     @y.setter
     def y(self, value):
+        """set y
+        Args:
+            value (int): value
+        """
         try:
             self.validator('y', value)
         except Exception:
@@ -107,7 +147,10 @@ class Rectangle(Base):
                     raise ValueError(f"{name} must be > 0")
 
     def area(self):
-        """Returns area of an instance"""
+        """find area of rectangle
+        Returns:
+            area of rectangle
+        """
         return self.__width * self.__height
 
     def display(self):
