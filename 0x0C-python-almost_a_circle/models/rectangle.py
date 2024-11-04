@@ -135,7 +135,7 @@ class Rectangle(Base):
             ValueError: if x or y value is < 0:
             ValueError: if width or height value is <= 0
         """
-        if type(value) != int:
+        if not isinstance(value, int):
             raise TypeError(f"{name} must be an integer")
         else:
             if name == 'x' or name == 'y':
@@ -165,7 +165,10 @@ class Rectangle(Base):
         Returns the object representation of
         an instance
         """
-        return f"[{type(self).__name__}] ({self.id}) {self.__x}/{self.__y} - {self.__width}/{self.__height}"
+
+        return "[{:s}] ({:d}) {:d}/{:d} - {:d}/{:d}".format(
+            type(self).__name__, self.id, self.__x, self.__y,
+            self.__width, self.__height)
 
     def update(self, *args):
         """
