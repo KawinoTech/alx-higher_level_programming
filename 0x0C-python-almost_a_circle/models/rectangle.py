@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
-Module containing Base class
-Base class will be the “base” of all other classes in this project
+Module containing Rectangle class. Sub-class of Base
 """
 from base import Base
 
@@ -18,7 +17,7 @@ class Rectangle(Base):
     """
 
     def __init__(self, width, height, x=0, y=0, id=None):
-        """initialize instance attributes
+        """Initialize instance attributes.
         Args:
             width (int): width
             height (int): height
@@ -42,7 +41,7 @@ class Rectangle(Base):
 
     @property
     def width(self):
-        """get width
+        """Get width.
         Returns:
             width
         """
@@ -50,7 +49,7 @@ class Rectangle(Base):
 
     @width.setter
     def width(self, value):
-        """set width
+        """Set width
         Args:
             value (int): value
         """
@@ -63,7 +62,7 @@ class Rectangle(Base):
 
     @property
     def height(self):
-        """get height
+        """Get height
         Returns:
             height
         """
@@ -71,7 +70,7 @@ class Rectangle(Base):
 
     @height.setter
     def height(self, value):
-        """set height
+        """Set height
         Args:
             value (int): value
         """
@@ -84,7 +83,7 @@ class Rectangle(Base):
 
     @property
     def x(self):
-        """get x
+        """Get x
         Returns:
             x
         """
@@ -92,7 +91,7 @@ class Rectangle(Base):
 
     @x.setter
     def x(self, value):
-        """set x
+        """Set x
         Args:
             value (int): value
         """
@@ -105,7 +104,7 @@ class Rectangle(Base):
 
     @property
     def y(self):
-        """get y
+        """Get y
         Returns:
             y
         """
@@ -113,7 +112,7 @@ class Rectangle(Base):
 
     @y.setter
     def y(self, value):
-        """set y
+        """Set y
         Args:
             value (int): value
         """
@@ -128,13 +127,13 @@ class Rectangle(Base):
     def validator(name, value):
         """
         Validates user input
-
         Args:
-            name: string
-            value: value to be validated
+            name (str): string
+            value (int): value to be validated
         Raises:
             TypeError: value is not an integer
-            ValueError: value is less or equal to 0:
+            ValueError: if x or y value is < 0:
+            ValueError: if width or height value is <= 0
         """
         if type(value) != int:
             raise TypeError(f"{name} must be an integer")
@@ -147,7 +146,7 @@ class Rectangle(Base):
                     raise ValueError(f"{name} must be > 0")
 
     def area(self):
-        """find area of rectangle
+        """Find area of rectangle
         Returns:
             area of rectangle
         """
@@ -169,6 +168,12 @@ class Rectangle(Base):
         return f"[{type(self).__name__}] ({self.id}) {self.__x}/{self.__y} - {self.__width}/{self.__height}"
 
     def update(self, *args):
+        """
+        Updates instance attributes.
+
+        Args:
+            *args (int): varying number of arguments
+        """
         attrs = ['id', 'width', 'height', 'x', 'y']
         for i in range(len(args)):
             setattr(self, attrs[i], args[i])
