@@ -1,163 +1,195 @@
 #!/usr/bin/python3
 """
-...
+Module containing Rectangle class. Sub-class of Base
 """
 
-from models.base import Base
+
+from base import Base
 
 
 class Rectangle(Base):
     """
-    ...
+    Class Rectangle. subclass of Base
+
+    Attrs:
+        private instance width: width of rectangle
+        private instance height: width of height
+        private instance x: x
+        private instance y: y
     """
 
     def __init__(self, width, height, x=0, y=0, id=None):
         """
-        ...
+        Initialize instance attributes.
+        Args:
+            width (int): Width of the rectangle.
+            height (int): Height of the rectangle.
+            x (int): X position of the rectangle.
+            y (int): Y position of the rectangle.
+            id (int): ID of the instance.
         """
         super().__init__(id)
-
-        self.check_integer_parameter(width, 'width')
-        self.check_integer_parameter(height, 'height')
-        self.check_integer_parameter(x, 'x')
-        self.check_integer_parameter(y, 'y')
-
-        self.__width = width
-        self.__height = height
-        self.__x = x
-        self.__y = y
+        try:
+            Rectangle.validator('width', width)
+            Rectangle.validator('height', height)
+            Rectangle.validator('x', x)
+            Rectangle.validator('y', y)
+        except Exception:
+            raise
+        else:
+            self.__width = width
+            self.__height = height
+            self.__x = x
+            self.__y = y
 
     @property
     def width(self):
         """
-        ...
+        Get width.
+        Returns:
+            width
         """
         return self.__width
 
     @width.setter
-    def width(self, param):
+    def width(self, value):
         """
-        ...
+        Set width
+        Args:
+            value (int): value
         """
-        self.check_integer_parameter(param, 'width')
-
-        self.__width = param
+        try:
+            self.validator('width', value)
+        except Exception:
+            raise
+        else:
+            self.__width = value
 
     @property
     def height(self):
         """
-        ...
+        Get height
+        Returns:
+            height
         """
         return self.__height
 
     @height.setter
-    def height(self, param):
+    def height(self, value):
         """
-        ...
+        Set height
+        Args:
+            value (int): value
         """
-        self.check_integer_parameter(param, 'height')
-
-        self.__height = param
+        try:
+            self.validator('height', value)
+        except Exception:
+            raise
+        else:
+            self.__height = value
 
     @property
     def x(self):
         """
-        ...
+        Get x
+        Returns:
+            x
         """
         return self.__x
 
     @x.setter
-    def x(self, param):
+    def x(self, value):
         """
-        ...
+        Set x
+        Args:
+            value (int): value
         """
-        self.check_integer_parameter(param, 'x')
-
-        self.__x = param
+        try:
+            self.validator('x', value)
+        except Exception:
+            raise
+        else:
+            self.__x = value
 
     @property
     def y(self):
         """
-        ...
+        Get y
+        Returns:
+            y
         """
         return self.__y
 
     @y.setter
-    def y(self, param):
+    def y(self, value):
         """
-        ...
+        Set y
+        Args:
+            value (int): value
         """
-        self.check_integer_parameter(param, 'y')
+        try:
+            self.validator('y', value)
+        except Exception:
+            raise
+        else:
+            self.__y = value
 
-        self.__y = param
-
-    def check_integer_parameter(self, value, param):
+    @staticmethod
+    def validator(name, value):
         """
-        ...
+        Validates user input
+        Args:
+            name (str): string
+            value (int): value to be validated
+        Raises:
+            TypeError: If `value` is not an integer.
+            ValueError: If `x` or `y` is less than 0.
+            ValueError: If `width` or `height` is less than or equal to 0.
         """
-        if type(value) is not int:
-            raise TypeError(param + ' must be an integer')
-
-        if value <= 0 and param in ('width', 'height'):
-            raise ValueError(param + ' must be > 0')
-
-        if value < 0 and param in ('x', 'y'):
-            raise ValueError(param + ' must be >= 0')
+        if not isinstance(value, int):
+            raise TypeError(f"{name} must be an integer")
+        else:
+            if name == 'x' or name == 'y':
+                if value < 0:
+                    raise ValueError(f"{name} must be >= 0")
+            if name == 'width' or name == 'height':
+                if value <= 0:
+                    raise ValueError(f"{name} must be > 0")
 
     def area(self):
         """
-        ...
+        Find area of rectangle
+        Returns:
+            area of rectangle
         """
         return self.__width * self.__height
 
     def display(self):
         """
-        ...
+        Displays a representation of a rectangle
+        using '#'
         """
-        if self.__y > 0:
-            print('\n' * self.__y, end='')
-
-        for i in range(self.height):
-            if self.__x > 0:
-                print(' ' * self.__x, end='')
-
-            print('#' * self.__width)
+        for i in range(self.__height):
+            print(self.__width * '#', end="")
+            print('\n', end='')
 
     def __str__(self):
         """
-        ...
+        Returns the object representation of
+        an instance
         """
-        return '[Rectangle] ({:d}) {:d}/{:d} - {:d}/{:d}'.format(
-            self.id, self.x, self.y, self.width, self.height
-        )
 
-    def update(self, *args, **kwargs):
-        """
-        ...
-        """
-        argc = len(args)
-        kwargc = len(kwargs)
-        modif_attrs = ['id', 'width', 'height', 'x', 'y']
+        return "[{:s}] ({:d}) {:d}/{:d} - {:d}/{:d}".format(
+            type(self).__name__, self.id, self.__x, self.__y,
+            self.__width, self.__height)
 
-        if argc > 5:
-            argc = 5
-
-        if argc > 0:
-            for i in range(argc):
-                setattr(self, modif_attrs[i], args[i])
-        elif kwargc > 0:
-            for k, v in kwargs.items():
-                if k in modif_attrs:
-                    setattr(self, k, v)
-
-    def to_dictionary(self):
+    def update(self, *args):
         """
-        ...
+        Updates instance attributes.
+
+        Args:
+            *args (int): varying number of arguments
         """
-        return {
-            'id': self.id,
-            'width': self.width,
-            'height': self.height,
-            'x': self.x,
-            'y': self.y
-        }
+        attrs = ['id', 'width', 'height', 'x', 'y']
+        for i in range(len(args)):
+            setattr(self, attrs[i], args[i])
