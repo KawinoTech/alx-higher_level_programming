@@ -1,2 +1,3 @@
--- Lists all tables within databsae mysql
-SHOW TABLES FROM mysql;
+-- Lists all tables within databsae as passed
+-- as argument
+SHOW TABLES;
