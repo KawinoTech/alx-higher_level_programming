@@ -24,8 +24,6 @@ Notes:
 """
 
 if __name__ != "__main__":
-    pass
-else:
     from sys import argv
     import MySQLdb
 
