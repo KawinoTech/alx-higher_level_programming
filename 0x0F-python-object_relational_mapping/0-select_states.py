@@ -42,7 +42,7 @@ if __name__ == "__main__":
     cur = db.cursor()
 
     # Executing an SQL query to retrieve all rows from the 'states' table
-    cur.execute("SELECT * FROM user ORDER BY id ASC;")
+    cur.execute("SELECT * FROM states ORDER BY id ASC;")
 
     # Fetching all rows from the result of the query
     rows = cur.fetchall()
