@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """
 This script connects to a MySQL database using command-line arguments for
-username, password, and database name. It retrieves all records from the 'states'
+username, password, and database name.
+It retrieves all records from the 'states'
 table and displays them in ascending order by their 'id'.
 
 Usage:
@@ -20,7 +21,8 @@ Dependencies:
 
 Notes:
     - This script is designed to be run directly, not as an imported module.
-    - If executed directly (i.e., when __name__ == "__main__"), the script will do nothing.
+    - If executed directly (i.e., when __name__ == "__main__"),
+    the script will do nothing.
 """
 
 if __name__ != "__main__":
@@ -40,11 +42,7 @@ if __name__ != "__main__":
     cur = db.cursor()
 
     # Executing an SQL query to retrieve all rows from the 'states' table
-    cur.execute("SELECT * FROM states ORDER BY id ASC")
+    cur.execute("SELECT * FROM `states`")
 
     # Fetching all rows from the result of the query
-    data = cur.fetchall()
-
-    # Printing each row
-    for i in data:
-        print(i)
+    [print(state) for state in cur.fetchall()]
