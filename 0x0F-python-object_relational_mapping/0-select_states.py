@@ -29,12 +29,15 @@ import MySQLdb
 
 if __name__ == "__main__":
 
-    # Establishing a connection to the MySQL database
+    # Unpack command-line arguments
+    username, password, database = argv[1], argv[2], argv[3]
+
+    # Connect to the MySQL database on localhost at port 3306
     db = MySQLdb.connect(
         host="localhost",
-        user=argv[1],
-        passwd=argv[2],
-        db=argv[3],
+        user=username,
+        passwd=password,
+        db=database,
         port=3306
     )
 
