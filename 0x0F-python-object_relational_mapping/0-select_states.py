@@ -24,10 +24,10 @@ Notes:
     - If executed directly (i.e., when __name__ == "__main__"),
     the script will do nothing.
 """
+from sys import argv
+import MySQLdb
 
 if __name__ == "__main__":
-    from sys import argv
-    import MySQLdb
 
     # Establishing a connection to the MySQL database
     db = MySQLdb.connect(
