@@ -32,9 +32,9 @@ if __name__ == "__main__":
     # Establishing a connection to the MySQL database
     db = MySQLdb.connect(
         host="localhost",
-        user=f"{argv[1]}",
-        passwd=f"{argv[2]}",
-        db=f"{argv[3]}",
+        user=argv[1],
+        passwd=argv[2],
+        db=argv[3],
         port=3306
     )
 
