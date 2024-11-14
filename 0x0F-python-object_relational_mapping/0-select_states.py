@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 This script connects to a MySQL database using command-line arguments for
 username, password, and database name. It retrieves all records from the 'states'
