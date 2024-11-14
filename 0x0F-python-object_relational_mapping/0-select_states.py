@@ -25,7 +25,7 @@ Notes:
     the script will do nothing.
 """
 
-if __name__ != "__main__":
+if __name__ == "__main__":
     from sys import argv
     import MySQLdb
 
@@ -42,7 +42,9 @@ if __name__ != "__main__":
     cur = db.cursor()
 
     # Executing an SQL query to retrieve all rows from the 'states' table
-    cur.execute("SELECT * FROM `states`")
+    cur.execute("SELECT * FROM user ORDER BY id ASC;")
 
     # Fetching all rows from the result of the query
-    [print(state) for state in cur.fetchall()]
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
