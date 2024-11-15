@@ -51,7 +51,7 @@ if __name__ == "__main__":
         cur = db.cursor()
 
         # Using parameterized query to prevent SQL injection
-        query = "SELECT * FROM state WHERE name = %s;"
+        query = "SELECT * FROM states WHERE name = %s;"
         cur.execute(query, (state_name,))
 
         # Fetching all rows from the result of the query
