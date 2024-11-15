@@ -20,7 +20,7 @@ Dependencies:
     - MySQLdb (You can install it via: pip install mysqlclient)
 
 Notes:
-    - This script is designed to be run directly, not as an imported module.
+    - This scrip is designed to be run directly, not as an imported module.
     - If executed directly (i.e., when __name__ == "__main__"),
     the script will do nothing.
 """
