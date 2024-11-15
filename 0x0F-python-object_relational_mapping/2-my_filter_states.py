@@ -37,33 +37,22 @@ if __name__ == "__main__":
     # Unpack command-line arguments
     username, password, database, state_name = argv[1], argv[2], argv[3], argv[4]
 
-    try:
         # Connect to the MySQL database on localhost at port 3306
-        db = MySQLdb.connect(
-            host="localhost",
-            user=username,
-            passwd=password,
-            db=database,
-            port=3306
-        )
+    db = MySQLdb.connect(
+        host="localhost",
+        user=username,
+        passwd=password,
+        db=database,
+        port=3306
+    )
 
-        # Creating a cursor object to interact with the database
-        cur = db.cursor()
+    # Creating a cursor object to interact with the database
+    cur = db.cursor()
 
-        # Using parameterized query to prevent SQL injection
-        cur.execute("SELECT * FROM `states` WHERE `name` = {};".format(state_name))
+    # Using parameterized query to prevent SQL injection
+    cur.execute("SELECT * FROM `states` WHERE `name` = '{}' ORDER BY states.id ASC;".format(state_name))
 
-        # Fetching all rows from the result of the query
-        rows = cur.fetchall()
-        for row in rows:
-            print(row)
-
-    except MySQLdb.Error as err:
-        print(f"Error: {err}")
-
-    finally:
-        # Ensuring that the cursor and connection are properly closed
-        if cur:
-            cur.close()
-        if db:
-            db.close()
+    # Fetching all rows from the result of the query
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
