@@ -29,15 +29,11 @@ import MySQLdb
 
 if __name__ == "__main__":
 
-    # Check if the correct number of arguments is provided
-    if len(argv) != 5:
-        print("Usage: python script.py <username> <password> <database> <state_name>")
-        exit(1)
-
     # Unpack command-line arguments
-    username, password, database, state_name = argv[1], argv[2], argv[3], argv[4]
+    username, password, database, state_name = argv[1],
+    argv[2], argv[3], argv[4]
 
-        # Connect to the MySQL database on localhost at port 3306
+    # Connect to the MySQL database on localhost at port 3306
     db = MySQLdb.connect(
         host="localhost",
         user=username,

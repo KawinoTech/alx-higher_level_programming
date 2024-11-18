@@ -5,7 +5,7 @@ from the 'states' table, and print them in ascending order by state name.
 
 Usage:
     ./script_name.py <mysql_username> <mysql_password> <database_name>
-    
+
     Example:
     ./script_name.py root password my_database
 """
@@ -17,11 +17,6 @@ import sys
 
 # Ensure the script runs only if executed directly
 if __name__ == "__main__":
-    # Check if the correct number of command-line arguments is provided
-    if len(sys.argv) != 4:
-        print("Usage: ./script_name.py <mysql_username> <mysql_password> <database_name>")
-        sys.exit(1)
-
     # Create a connection to the MySQL database
     engine = create_engine(
         'mysql+mysqldb://{}:{}@localhost/{}'.format(
@@ -29,7 +24,7 @@ if __name__ == "__main__":
             sys.argv[2],  # MySQL password
             sys.argv[3]   # Database name
         ),
-        pool_pre_ping=True  # Ensures that SQLAlchemy checks if the connection is still alive
+        pool_pre_ping=True
     )
 
     # Create all tables in the database (if they do not exist)
@@ -39,10 +34,12 @@ if __name__ == "__main__":
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # Query all records from the 'states' table, ordered by state name (ascending)
+    # Query all records from the 'states'
+    # table, ordered by state name (ascending)
     all_states = session.query(State).order_by(State.id).all()
 
-    # Loop through the query results and print each state's name with an index
+    # Loop through the query results and
+    # print each state's name with an index
     i = 1
     for state in all_states:
         print("{:d}:".format(state.id), state.name)

@@ -4,10 +4,12 @@ from sqlalchemy.orm import declarative_base
 # Define a base class for all models
 Base = declarative_base()
 
+
 class State(Base):
+
     """
     A class to represent the 'states' table in a database.
-    
+
     Attributes:
     ----------
     id : int
@@ -15,10 +17,10 @@ class State(Base):
     name : str
         The name of the state (non-null, up to 128 characters).
     """
-
     __tablename__ = 'states'
 
-    id = Column('id', Integer, primary_key=True, nullable=False, unique=True, autoincrement=True)
+    id = Column('id', Integer, primary_key=True, nullable=False,
+                unique=True, autoincrement=True)
     """
     Column: id
     ----------

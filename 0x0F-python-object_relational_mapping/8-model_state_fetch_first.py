@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-A script to connect to a MySQL database using SQLAlchemy, 
+A script to connect to a MySQL database using SQLAlchemy,
 retrieve the first record from the 'states' table ordered by 'id',
 and print it.
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     # Query the first record from the 'states' table, ordered by 'id'
     state = session.query(State).order_by(State.id).first()
-    
+
     # If a state is found, print its details
     if state:
         print("{:d}:".format(1), state.name)

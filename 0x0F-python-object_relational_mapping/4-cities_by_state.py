@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     username, password, database = argv[1], argv[2], argv[3]
 
-        # Connect to the MySQL database on localhost at port 3306
+    # Connect to the MySQL database on localhost at port 3306
     db = MySQLdb.connect(
         host="localhost",
         user=username,
@@ -52,4 +52,4 @@ if __name__ == "__main__":
     # Fetching all rows from the result of the query
     rows = cur.fetchall()
     for row in rows:
-       print(row)
+        print(row)
