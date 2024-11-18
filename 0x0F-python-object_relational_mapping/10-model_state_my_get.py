@@ -1,5 +1,15 @@
 #!/usr/bin/python3
+"""
+A script to connect to a MySQL database using SQLAlchemy,
+retrieve the first record from the 'states' table ordered by 'id',
+and print it.
 
+Usage:
+    ./script_name.py <mysql_username> <mysql_password> <database_name>
+
+Example:
+    ./script_name.py root password my_database
+"""
 # Import necessary libraries and modules
 from model_state import Base, State
 from sqlalchemy import create_engine
