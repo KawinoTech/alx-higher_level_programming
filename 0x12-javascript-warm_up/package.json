@@ -1,0 +1,25 @@
+{
+  "name": "js_warmup",
+  "version": "1.0.0",
+  "description": "intro_to_js",
+  "main": "main.js",
+  "dependencies": {
+    "semistandard": "^17.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.15.0",
+    "globals": "^15.12.0"
+  },
+  "scripts": {
+    "test": "N/A"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KawinoTech/alx-higher_level_programming/tree/main/0x12-javascript-warm_up"
+  },
+  "keywords": [
+    "N/A"
+  ],
+  "author": "Jeremy",
+  "license": "ISC"
+}
