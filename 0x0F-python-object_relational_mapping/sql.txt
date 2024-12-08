@@ -173,6 +173,14 @@ Why It's Useful
 Idle Connections: In environments with idle connections (e.g., cloud services), connections might be closed after being idle for too long. Setting pool_pre_ping=True ensures that before using a connection, it’s checked and a new one is obtained if necessary.
 
 Handling Connection Timeouts: If your database server has connection timeouts or if it occasionally kills inactive connections, pool_pre_ping=True ensures that your application will automatically retry with a new connection, preventing errors related to using stale or closed connections.
+
+A connection pool maintains a collection of reusable database connections, which eliminates the overhead of establishing new connections for each query or request. Here’s why it helps with performance:
+
+Connection Overhead: Establishing a new database connection is a relatively expensive operation in terms of time and resources. A connection pool helps by maintaining a set of open, reusable connections, so applications don’t need to wait for new connections to be established repeatedly.
+
+Reduced Latency: For each request, a connection can be quickly borrowed from the pool, avoiding the time spent on creating and tearing down connections.
+
+Concurrency: A pool of connections allows multiple operations to be handled concurrently. When one request completes and releases a connection back to the pool, another request can immediately use that connection without waiting for the database to create a new one.
 """
     Base.metadata.create_all(bind=engine)
 
