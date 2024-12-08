@@ -165,7 +165,15 @@ class Person(Base):
 if __name__ == '__main__':
 #The dialect ensures that SQLAlchemy generates SQL syntax that the database understands
 #driver is a Python library or module that facilitates the communication with the database
-    engine = create_engine("mysql+mysqlclient://jeremy:vybzkartel@localhost/test", echo=True)
+    engine = create_engine("mysql+mysqlclient://jeremy:vybzkartel@localhost/test", echo=True, pool_pre_ping=True)
+"""
+When pool_pre_ping is set to True, SQLAlchemy will issue a lightweight "ping" to the database before using an existing connection from the connection pool. This ensures that the connection is alive and valid. If the connection is found to be invalid (e.g., if it was closed due to a timeout), it will be discarded, and a new connection will be established.
+
+Why It's Useful
+Idle Connections: In environments with idle connections (e.g., cloud services), connections might be closed after being idle for too long. Setting pool_pre_ping=True ensures that before using a connection, it’s checked and a new one is obtained if necessary.
+
+Handling Connection Timeouts: If your database server has connection timeouts or if it occasionally kills inactive connections, pool_pre_ping=True ensures that your application will automatically retry with a new connection, preventing errors related to using stale or closed connections.
+"""
     Base.metadata.create_all(bind=engine)
 
     Sess = sessionmaker(bind=engine)
