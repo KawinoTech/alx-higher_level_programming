@@ -163,7 +163,9 @@ class Person(Base):
         return f"Name: {self.first_name} {self.last_name}\nGender: {self.gender}\nAge: {self.age}"
 
 if __name__ == '__main__':
-    engine = create_engine("mysql://jeremy:vybzkartel@localhost/test", echo=True)
+#The dialect ensures that SQLAlchemy generates SQL syntax that the database understands
+#driver is a Python library or module that facilitates the communication with the database
+    engine = create_engine("mysql+mysqlclient://jeremy:vybzkartel@localhost/test", echo=True)
     Base.metadata.create_all(bind=engine)
 
     Sess = sessionmaker(bind=engine)
