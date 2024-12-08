@@ -186,6 +186,152 @@ Concurrency: A pool of connections allows multiple operations to be handled conc
 
     Sess = sessionmaker(bind=engine)
     session = Sess()
+"""
+The sessionmaker function is used to create a factory for sessions that are bound to a specific engine
+
+
+In SQLAlchemy, sessionmaker is a factory for creating new Session objects. A session in SQLAlchemy represents a "workspace" for working with the database. It allows you to query, add, update, and delete objects within a transaction-like context.
+
+When creating a session using sessionmaker, you can specify various flags and options to control its behavior. Below is a guide on how to create sessions with sessionmaker and details about the flags that can be used.
+
+Basic Session Creation with sessionmaker
+Create an engine: First, you create a database engine that connects to your database.
+
+python
+Copy code
+from sqlalchemy import create_engine
+
+# Create engine
+engine = create_engine('sqlite:///example.db')
+Create a sessionmaker: The sessionmaker function is used to create a factory for sessions that are bound to a specific engine.
+
+python
+Copy code
+from sqlalchemy.orm import sessionmaker
+
+# Create a session factory bound to the engine
+Session = sessionmaker(bind=engine)
+Create a session: Now, you can create a session using the sessionmaker factory.
+
+python
+Copy code
+# Create a session instance
+session = Session()
+Once you have a session, you can use it to interact with the database, and you need to commit the transaction and close the session when done.
+
+Common Flags for sessionmaker
+When creating a session, you can use several flags to configure the session's behavior. Some of the most commonly used flags are listed below.
+
+1. expire_on_commit (default: True)
+Purpose: Controls whether the session expires all instances after a commit.
+
+Effect: If set to True (default), all objects loaded during the session will expire after the transaction is committed. This means that any attribute access on those objects will trigger a reload from the database. If set to False, objects will not expire after commit.
+
+Use case: This can be useful if you want to ensure that objects are fresh and reflect any changes made directly in the database after the session commit.
+
+python
+Copy code
+Session = sessionmaker(bind=engine, expire_on_commit=False)
+2. autoflush (default: True)
+Purpose: Controls whether SQLAlchemy should automatically flush changes to the database when necessary (e.g., before a query is executed).
+
+Effect: If set to True, the session will automatically flush pending changes to the database when it performs queries. If set to False, you must explicitly call session.flush() to write changes.
+
+Use case: Useful for performance tuning when you want more control over when changes are flushed to the database.
+
+python
+Copy code
+Session = sessionmaker(bind=engine, autoflush=False)
+3. autocommit (default: False)
+Purpose: Controls whether the session operates in autocommit mode.
+
+Effect: If set to True, SQLAlchemy will automatically commit transactions after each SQL statement is executed. This is typically not recommended, as you lose control over commit points. It can be useful in certain cases (e.g., working with legacy systems that require autocommit).
+
+Use case: This is often used in databases that require autocommit mode, but in modern SQLAlchemy usage, it’s best to rely on explicit commit calls.
+
+python
+Copy code
+Session = sessionmaker(bind=engine, autocommit=True)
+4. bind
+Purpose: Associates the session with a specific database engine or connection.
+
+Effect: By passing the bind argument, you can specify which database engine or connection the session should use. This is typically done when you create the sessionmaker factory.
+
+python
+Copy code
+Session = sessionmaker(bind=engine)
+5. binds
+Purpose: Associates the session with multiple database engines, typically used in cases where you need to work with multiple databases at once.
+
+Effect: Allows the session to bind to more than one engine.
+
+python
+Copy code
+Session = sessionmaker(binds={SomeModel: engine1, AnotherModel: engine2})
+6. query_class
+Purpose: Allows you to customize the class used for query operations.
+
+Effect: You can specify a custom subclass of Session that overrides the query method to customize how queries are executed or return results.
+
+python
+Copy code
+from sqlalchemy.orm import Query
+
+class MyCustomQuery(Query):
+    # Customize query methods here
+
+Session = sessionmaker(bind=engine, query_class=MyCustomQuery)
+7. expire_on_commit
+Purpose: Determines if object instances should expire after the session commit.
+
+Effect: If set to True, all instances loaded during the session are expired once the transaction is committed, causing them to be refreshed on subsequent access.
+
+python
+Copy code
+Session = sessionmaker(bind=engine, expire_on_commit=True)
+Creating and Using a Session
+Once the sessionmaker is configured, you can create a session and use it for database operations:
+
+python
+Copy code
+# Create a session
+session = Session()
+
+# Add or query data
+user = User(name="Alice")
+session.add(user)
+
+# Commit the transaction
+session.commit()
+
+# Query data
+users = session.query(User).all()
+
+# Close the session
+session.close()
+Summary of Common Flags for sessionmaker
+Flag	Description
+expire_on_commit	Whether to expire instances after commit (default: True)
+autoflush	Whether the session should automatically flush changes (default: True)
+autocommit	Whether the session should automatically commit (default: False)
+bind	The database engine the session is bound to
+binds	A dictionary of models mapped to different engines
+query_class	Custom query class for the session
+Context Management (with statement)
+You can use a session as a context manager to automatically handle commit and close:
+
+python
+Copy code
+# Using session as a context manager
+with Session() as session:
+    user = User(name="Alice")
+    session.add(user)
+    session.commit()
+When to Use Flags
+expire_on_commit=False: If you want to avoid reloading data after a commit (e.g., for performance reasons in an application where data doesn’t change directly in the database).
+autoflush=False: When you want to control when the session flushes changes to the database, often useful when you need batch operations or more control over transactions.
+autocommit=True: For legacy databases that expect autocommit behavior, though generally, it's better to manage commits explicitly in modern applications.
+"""
     p1 = Person("Jeremy", "Okoth", 26, "Male", "Innocent")
     data = session.query(Person).filter_by(first_name="Jeremy").first()
     print(id(p1))
