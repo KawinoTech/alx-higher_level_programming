@@ -1,0 +1,44 @@
+John Doe lives at 123 Elm Street, Springfield, IL 62704, USA. His phone number is (555) 123-4567, and his email is john.doe@example.com.
+
+Jane's website is https://www.janeblog.org/about. You can also find her portfolio at http://portfolio.jane.co.uk.
+
+Important dates:
+
+Meeting: 12/01/2024
+Deadline: 2024-12-15
+Birthday: March 3, 1995
+Credit card numbers (masked for security):
+
+Visa: 4111 1111 1111 1111
+MasterCard: 5500-0000-0000-0004
+Product IDs:
+
+Widget: WID-3456-XZ9
+Gadget: GAD-8765-YT3
+Part Number: **PN#1234
+
+
+REGEX
+Allows to search for specific patterns of text
+
+Searching for string literals
+
+abc  - searches for exactly the string literal 'abc'
+. - search for any character except the newline
+\d - searches all digits from 0-9  --> \D non-digit
+\w - searches for word characters  --> \W non-word characters
+\s - searches for whitespaces  --> \S non-whitespace
+\. - search for dots . The \ is used to escape --> USA\. escapes the . since . is a special character
+\\ - search for dots \
+\b - search for word boundaries --> \bpattern - searches for pattern word only if it has a boundary between the previous and next word. The end and start of a line is considered a boundary
+[] - character set. [89]\d\d - first number either 8 or 9 followed by any two digits
+[1-7]\d\d - specify range of values i.e numbers  between 1 and 7 followed by any two digits
+
+/d{3} - Quantifiers - searches for exactly three digits
+/d{3,4} - Quantifier - searches for range of numbers
+/d* - Quantifier - 0 or more
+/d+ - Quantifier - 1 or more
+/d? - Quantifier - 0 or one
+
+GROUPS
+M(r|s|iss|rs)
