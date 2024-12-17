@@ -163,11 +163,175 @@ class Person(Base):
         return f"Name: {self.first_name} {self.last_name}\nGender: {self.gender}\nAge: {self.age}"
 
 if __name__ == '__main__':
-    engine = create_engine("mysql://jeremy:vybzkartel@localhost/test", echo=True)
+#The dialect ensures that SQLAlchemy generates SQL syntax that the database understands
+#driver is a Python library or module that facilitates the communication with the database
+    engine = create_engine("mysql+mysqlclient://jeremy:vybzkartel@localhost/test", echo=True, pool_pre_ping=True)
+"""
+When pool_pre_ping is set to True, SQLAlchemy will issue a lightweight "ping" to the database before using an existing connection from the connection pool. This ensures that the connection is alive and valid. If the connection is found to be invalid (e.g., if it was closed due to a timeout), it will be discarded, and a new connection will be established.
+
+Why It's Useful
+Idle Connections: In environments with idle connections (e.g., cloud services), connections might be closed after being idle for too long. Setting pool_pre_ping=True ensures that before using a connection, it’s checked and a new one is obtained if necessary.
+
+Handling Connection Timeouts: If your database server has connection timeouts or if it occasionally kills inactive connections, pool_pre_ping=True ensures that your application will automatically retry with a new connection, preventing errors related to using stale or closed connections.
+
+A connection pool maintains a collection of reusable database connections, which eliminates the overhead of establishing new connections for each query or request. Here’s why it helps with performance:
+
+Connection Overhead: Establishing a new database connection is a relatively expensive operation in terms of time and resources. A connection pool helps by maintaining a set of open, reusable connections, so applications don’t need to wait for new connections to be established repeatedly.
+
+Reduced Latency: For each request, a connection can be quickly borrowed from the pool, avoiding the time spent on creating and tearing down connections.
+
+Concurrency: A pool of connections allows multiple operations to be handled concurrently. When one request completes and releases a connection back to the pool, another request can immediately use that connection without waiting for the database to create a new one.
+"""
     Base.metadata.create_all(bind=engine)
 
     Sess = sessionmaker(bind=engine)
     session = Sess()
+"""
+The sessionmaker function is used to create a factory for sessions that are bound to a specific engine
+
+
+In SQLAlchemy, sessionmaker is a factory for creating new Session objects. A session in SQLAlchemy represents a "workspace" for working with the database. It allows you to query, add, update, and delete objects within a transaction-like context.
+
+When creating a session using sessionmaker, you can specify various flags and options to control its behavior. Below is a guide on how to create sessions with sessionmaker and details about the flags that can be used.
+
+Basic Session Creation with sessionmaker
+Create an engine: First, you create a database engine that connects to your database.
+
+python
+Copy code
+from sqlalchemy import create_engine
+
+# Create engine
+engine = create_engine('sqlite:///example.db')
+Create a sessionmaker: The sessionmaker function is used to create a factory for sessions that are bound to a specific engine.
+
+python
+Copy code
+from sqlalchemy.orm import sessionmaker
+
+# Create a session factory bound to the engine
+Session = sessionmaker(bind=engine)
+Create a session: Now, you can create a session using the sessionmaker factory.
+
+python
+Copy code
+# Create a session instance
+session = Session()
+Once you have a session, you can use it to interact with the database, and you need to commit the transaction and close the session when done.
+
+Common Flags for sessionmaker
+When creating a session, you can use several flags to configure the session's behavior. Some of the most commonly used flags are listed below.
+
+1. expire_on_commit (default: True)
+Purpose: Controls whether the session expires all instances after a commit.
+
+Effect: If set to True (default), all objects loaded during the session will expire after the transaction is committed. This means that any attribute access on those objects will trigger a reload from the database. If set to False, objects will not expire after commit.
+
+Use case: This can be useful if you want to ensure that objects are fresh and reflect any changes made directly in the database after the session commit.
+
+python
+Copy code
+Session = sessionmaker(bind=engine, expire_on_commit=False)
+2. autoflush (default: True)
+Purpose: Controls whether SQLAlchemy should automatically flush changes to the database when necessary (e.g., before a query is executed).
+
+Effect: If set to True, the session will automatically flush pending changes to the database when it performs queries. If set to False, you must explicitly call session.flush() to write changes.
+
+Use case: Useful for performance tuning when you want more control over when changes are flushed to the database.
+
+python
+Copy code
+Session = sessionmaker(bind=engine, autoflush=False)
+3. autocommit (default: False)
+Purpose: Controls whether the session operates in autocommit mode.
+
+Effect: If set to True, SQLAlchemy will automatically commit transactions after each SQL statement is executed. This is typically not recommended, as you lose control over commit points. It can be useful in certain cases (e.g., working with legacy systems that require autocommit).
+
+Use case: This is often used in databases that require autocommit mode, but in modern SQLAlchemy usage, it’s best to rely on explicit commit calls.
+
+python
+Copy code
+Session = sessionmaker(bind=engine, autocommit=True)
+4. bind
+Purpose: Associates the session with a specific database engine or connection.
+
+Effect: By passing the bind argument, you can specify which database engine or connection the session should use. This is typically done when you create the sessionmaker factory.
+
+python
+Copy code
+Session = sessionmaker(bind=engine)
+5. binds
+Purpose: Associates the session with multiple database engines, typically used in cases where you need to work with multiple databases at once.
+
+Effect: Allows the session to bind to more than one engine.
+
+python
+Copy code
+Session = sessionmaker(binds={SomeModel: engine1, AnotherModel: engine2})
+6. query_class
+Purpose: Allows you to customize the class used for query operations.
+
+Effect: You can specify a custom subclass of Session that overrides the query method to customize how queries are executed or return results.
+
+python
+Copy code
+from sqlalchemy.orm import Query
+
+class MyCustomQuery(Query):
+    # Customize query methods here
+
+Session = sessionmaker(bind=engine, query_class=MyCustomQuery)
+7. expire_on_commit
+Purpose: Determines if object instances should expire after the session commit.
+
+Effect: If set to True, all instances loaded during the session are expired once the transaction is committed, causing them to be refreshed on subsequent access.
+
+python
+Copy code
+Session = sessionmaker(bind=engine, expire_on_commit=True)
+Creating and Using a Session
+Once the sessionmaker is configured, you can create a session and use it for database operations:
+
+python
+Copy code
+# Create a session
+session = Session()
+
+# Add or query data
+user = User(name="Alice")
+session.add(user)
+
+# Commit the transaction
+session.commit()
+
+# Query data
+users = session.query(User).all()
+
+# Close the session
+session.close()
+Summary of Common Flags for sessionmaker
+Flag	Description
+expire_on_commit	Whether to expire instances after commit (default: True)
+autoflush	Whether the session should automatically flush changes (default: True)
+autocommit	Whether the session should automatically commit (default: False)
+bind	The database engine the session is bound to
+binds	A dictionary of models mapped to different engines
+query_class	Custom query class for the session
+Context Management (with statement)
+You can use a session as a context manager to automatically handle commit and close:
+
+python
+Copy code
+# Using session as a context manager
+with Session() as session:
+    user = User(name="Alice")
+    session.add(user)
+    session.commit()
+When to Use Flags
+expire_on_commit=False: If you want to avoid reloading data after a commit (e.g., for performance reasons in an application where data doesn’t change directly in the database).
+autoflush=False: When you want to control when the session flushes changes to the database, often useful when you need batch operations or more control over transactions.
+autocommit=True: For legacy databases that expect autocommit behavior, though generally, it's better to manage commits explicitly in modern applications.
+"""
     p1 = Person("Jeremy", "Okoth", 26, "Male", "Innocent")
     data = session.query(Person).filter_by(first_name="Jeremy").first()
     print(id(p1))
@@ -251,5 +415,59 @@ def download(file_id):
 
 PAGINATE
     data = User.query.paginate(per_page=5, page=2) User.query.get_or_404
+
+CREATING USERS
+/*How Plaintext Fallback Works
+When fallback occurs:
+
+The server sends a request to the client indicating that a plaintext password is required.
+The client sends the plaintext password directly over the network.
+If the connection is not encrypted (e.g., using SSL/TLS), this password is exposed to potential interception.
+Risks of Plaintext Password Fallback
+Password Interception: If the connection is unencrypted, the plaintext password can be intercepted by attackers monitoring the network (man-in-the-middle attacks).
+Reduced Security: It negates the primary benefit of the caching_sha2_password plugin, which is secure authentication using hashed credentials.
+Preventing Plaintext Password Fallback
+Require Secure Connections:
+
+Enforce SSL/TLS for all connections to the MySQL server:
+sql
+Copy code
+ALTER USER 'username'@'host' REQUIRE SSL;
+Ensure that require_secure_transport is enabled in the MySQL configuration:
+ini
+Copy code
+[mysqld]
+require_secure_transport=ON
+This setting forces the server to reject non-secure connections.
+Disable Plaintext Fallback on the Client:
+
+Some MySQL clients allow disabling fallback to plaintext authentication. For example:
+bash
+Copy code
+mysql --ssl-mode=REQUIRED
+This ensures the client only connects over secure channels.
+Update the MySQL Client:
+
+Use a MySQL client or library that supports caching_sha2_password to avoid needing plaintext fallback.
+Use Secure Authentication:
+
+If plaintext fallback is unavoidable, consider switching users to the mysql_native_password plugin temporarily until secure transport is available:
+sql
+Copy code
+ALTER USER 'username'@'host' IDENTIFIED WITH 'mysql_native_password' BY 'password';
+
+
+What Does localhost Mean?
+Local Machine:
+
+localhost specifically refers to the local computer where the database server is running.
+Connections from localhost use the MySQL socket file rather than the network interface, which is often faster and more secure.
+Access Restriction:
+
+MySQL allows you to restrict access based on the host. For example:
+hbnb_dev@localhost: The user hbnb_dev can connect only from the local machine.
+hbnb_dev@%: The user hbnb_dev can connect from any host.
+hbnb_dev@'192.168.1.100': The user hbnb_dev can connect only from the host with the IP address 192.168.1.100.
+*/
     for i in data:
         print(i.username)Paginate
