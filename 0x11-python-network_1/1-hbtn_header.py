@@ -17,9 +17,12 @@ Dependencies:
 - urllib.request: Used to make the HTTP request.
 """
 
-if __name__ == "__main__":
-    from sys import argv
-    from urllib.request import urlopen
+import urllib.request
 
-    with urlopen(argv[1]) as resp:
+
+if __name__ == "__main__":
+    import sys
+    import urllib
+
+    with urllib.request.urlopen(sys.argv[1]) as resp:
         print(resp.headers.get('X-Request-Id'))
