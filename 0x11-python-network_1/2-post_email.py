@@ -3,8 +3,10 @@
 Module: Send POST Request with Email
 
 Description:
-This module sends a POST request to a specified URL with an email address in the payload.
-The email is hardcoded as `hr@holbertonschool.com`, and the response is printed after being decoded.
+This module sends a POST request to a specified URL 
+with an email address in the payload.
+The email is hardcoded as `hr@holbertonschool.com`, and 
+the response is printed after being decoded.
 
 Usage:
 - Run the script, which sends a POST request to argv[0].
@@ -18,7 +20,8 @@ Dependencies:
 Example:
 $ ./script_name.py
 Output:
-The response content from the server is printed, typically in UTF-8 encoded format.
+The response content from the server is printed, 
+typically in UTF-8 encoded format.
 
 Notes:
 - The script sends data to a local server at argv[0].
