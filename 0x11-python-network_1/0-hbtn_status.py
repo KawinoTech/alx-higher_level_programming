@@ -20,9 +20,9 @@ Dependencies:
 """
 
 if __name__ == "__main__":
-    from urllib.request import urlopen
+    import urllib
 
-    with urlopen('https://alx-intranet.hbtn.io/status') as resp:
+    with urllib.request.urlopen('https://alx-intranet.hbtn.io/status') as resp:
         resp_data = resp.read()
         body_string = resp_data.decode('utf-8')
         body_type = type(resp_data)
